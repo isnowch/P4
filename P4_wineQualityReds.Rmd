@@ -307,7 +307,7 @@ cor.test(log10(wine_quality_red$fixed.acidity) ,  wine_quality_red$density)
 ```{r echo=FALSE, Multivariate_Plots}
 ggplot(aes(x = volatile.acidity, y = alcohol), data=wine_quality_red)+
   geom_point(aes(color = factor(quality)),position = 'jitter')+
-  scale_color_brewer(type = 'div')
+  scale_color_brewer(type = 'seq')
 ```
 
 ### 通过散点图发现，酒精度和可挥发性酸两个变量较好地解释红酒质量，酒精度高而可挥发性酸低的红酒总体拥有更好的质量。
@@ -315,7 +315,7 @@ ggplot(aes(x = volatile.acidity, y = alcohol), data=wine_quality_red)+
 ```{r echo=FALSE}
 ggplot(aes(x = citric.acid, y = alcohol), data=wine_quality_red)+
   geom_point(aes(color = factor(quality)))+
-  scale_color_brewer(type = 'div')
+  scale_color_brewer(type = 'seq')
 ```
 ```{r echo=FALSE}
 ggplot( aes(x= density ,y= fixed.acidity + residual.sugar - alcohol), 
@@ -331,14 +331,14 @@ cor.test(wine_quality_red$density, wine_quality_red$fixed.acidity + wine_quality
 ```{r echo=FALSE}
 ggplot(aes(x = sulphates, y = alcohol), data=wine_quality_red)+
   geom_point(aes(color = factor(quality)))+
-  scale_color_brewer(type = 'div')
+  scale_color_brewer(type = 'seq')
 ```
 
 
 ```{r echo=FALSE}
 ggplot(aes(x = volatile.acidity, y = sulphates), data=wine_quality_red)+
   geom_point(aes(color = factor(quality)), position = 'jitter')+
-  scale_color_brewer(type = 'div')
+  scale_color_brewer(type = 'seq')
 ```
 
 ### 比较硫化物与酒精度和可挥发性酸两个组合，酒精度与硫化物两个变量之间有更明显的相互加强作用，两个变量都较高的红酒更有可能拥有较好的质量。
@@ -411,7 +411,7 @@ grid.arrange(vb, ab, ncol= 1)
 ggplot(aes(x = sulphates, y = alcohol), data=wine_quality_red)+
   geom_point(aes(color = factor(quality)))+
   scale_x_continuous(limits = c(0.25, 1.25))+
-  scale_color_brewer(type = 'div', 
+  scale_color_brewer(type = 'seq', 
                      guide = guide_legend(title = 'quality (score between 0 and 10)', 
                      reverse = F, override.aes = list(alpha = 1, size = 2)))+
   labs(title = 'Alcohol by Sulphates and Quality',
