@@ -1,0 +1,455 @@
+# 高源
+========================================================
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, packages}
+# Load all of the packages that you end up using
+# in your analysis in this code chunk.
+
+# Notice that the parameter "echo" was set to FALSE for this code chunk.
+# This prevents the code from displaying in the knitted HTML output.
+# You should set echo=FALSE for all code chunks in your file.
+
+library(psych)
+library(ggplot2)
+library(gridExtra)
+```
+
+```{r echo=FALSE, Load_the_Data}
+# Load the Data
+wine_quality_red <- read.csv("wineQualityReds.csv")
+```
+
+### 此报告探索了红酒质量量数据集，该数据集包含了1599种红酒的化学成分及评分信息。
+
+# Univariate Plots Section
+```{r echo=FALSE, Univariate_Plots}
+dim(wine_quality_red)
+```
+```{r echo=FALSE}
+str(wine_quality_red)
+```
+
+```{r echo=FALSE}
+summary(wine_quality_red)
+```
+```{r echo=FALSE}
+
+ggplot(aes(x = quality), data = wine_quality_red)+
+  scale_x_continuous(breaks=seq(0, 10, 1))+
+  geom_bar()
+```
+```{r echo=FALSE}
+t <- table(wine_quality_red$quality)
+t
+prop.table(t)
+```
+### 数据中红酒质量的分数分布在3分至8分之间，其中大多数集中在5分和6分两档，约占全部观测数的82.5%。
+
+```{r echo=FALSE}
+ggplot(aes(x = fixed.acidity), data = wine_quality_red)+
+  geom_histogram()
+
+ggplot(aes(x = fixed.acidity), data = wine_quality_red)+
+  geom_histogram()+
+  facet_wrap(~quality) 
+
+ggplot(aes(fixed.acidity, color = factor(quality)), data = wine_quality_red)+
+  geom_density()
+```
+```{r echo=FALSE}
+summary(wine_quality_red$fixed.acidity)
+```
+### 大多数红酒fixed acidity（固定酸）含量在7.10 g/dm^3 和9.20 g/dm^3之间，中位数为 7.90 g/dm^3，     均值为 8.32 g/dm^3.
+
+```{r echo=FALSE}
+ggplot(aes(x = volatile.acidity), data = wine_quality_red)+
+  geom_histogram()
+
+ggplot(aes(x = volatile.acidity), data = wine_quality_red)+
+  geom_histogram()+
+  facet_wrap(~quality)
+
+ggplot(aes(volatile.acidity, color = factor(quality)), data = wine_quality_red)+
+  geom_density()
+```
+```{r echo=FALSE}
+summary(wine_quality_red$volatile.acidity)
+```
+### 大多数红酒volatile acidity（可挥发性酸）含量在0.39 g/dm^3 和0.64 g/dm^3之间，中位数为 0.52 g/dm^3，均值为 0.53 g/dm^3.
+
+
+```{r echo=FALSE}
+ggplot(aes(x = citric.acid), data = wine_quality_red)+
+  geom_histogram(binwidth = 0.01)
+
+ggplot(aes(x = citric.acid), data = wine_quality_red)+
+  geom_histogram(binwidth = 0.01)+
+  facet_wrap(~quality)
+
+ggplot(aes(citric.acid, color = factor(quality)), data = wine_quality_red)+
+  geom_density()
+```
+```{r echo=FALSE}
+summary(wine_quality_red$citric.acid)
+```
+### citric acid(柠檬酸)在红酒在含量较少，在数据中，有近10%红酒柠檬酸含量为零，中位数为 0.26 g/dm^3，     均值为 0.27 g/dm^3.
+
+```{r echo=FALSE}
+ggplot(aes(x =  residual.sugar), data = wine_quality_red)+
+  geom_histogram(binwidth = 0.1)
+
+ggplot(aes(x =  residual.sugar), data = wine_quality_red)+
+  scale_x_continuous(limits = c(0, 5))+
+  geom_histogram(binwidth = 0.1)
+
+ggplot(aes(x =  residual.sugar), data = wine_quality_red)+
+  scale_x_continuous(limits = c(0, 5))+
+  geom_histogram(binwidth = 0.1)+
+  facet_wrap(~quality)
+
+ggplot(aes(residual.sugar, color = factor(quality)), data = wine_quality_red)+
+  geom_density()
+```
+```{r echo=FALSE}
+summary(wine_quality_red$residual.sugar)
+```
+### residual.sugar(残糖)主要分布在1.5 g/dm^3 至 3 g/dm^3之间，而在右侧有较长的尾，最小值为0.90 g/dm^3， 最大值为 15.50。
+
+```{r echo=FALSE}
+ggplot(aes(x =  chlorides), data = wine_quality_red)+
+  geom_histogram(binwidth = 0.01)
+
+ggplot(aes(x =  chlorides), data = wine_quality_red)+
+  scale_x_continuous(limits = c(0, 0.2))+
+  geom_histogram(binwidth = 0.005)
+
+ggplot(aes(x =  chlorides), data = wine_quality_red)+
+  scale_x_continuous(limits = c(0, 0.2))+
+  geom_histogram(binwidth = 0.005)+
+  facet_wrap(~quality)
+
+ggplot(aes(chlorides, color = factor(quality)), data = wine_quality_red)+
+  geom_density()
+```
+```{r echo=FALSE}
+summary(wine_quality_red$chlorides)
+```
+### chlorides(氯化物)主要分布在0.05 g/dm^3 至 0.10g/dm^3之间，在右侧有较长的尾，中位数为0.079 g/dm^3，均值为0.0875 g/dm^3，最小值为0.012 g/dm^3， 最大值为 0.611。
+
+
+```{r echo=FALSE}
+ggplot(aes(x =  free.sulfur.dioxide), data = wine_quality_red)+
+  geom_histogram(binwidth = 1)
+
+ggplot(aes(x =  free.sulfur.dioxide), data = wine_quality_red)+
+  scale_x_continuous(trans = 'log10')+
+  geom_histogram()
+
+ggplot(aes(free.sulfur.dioxide, color = factor(quality)), data = wine_quality_red)+
+  geom_density()
+```
+```{r echo=FALSE}
+summary(wine_quality_red$free.sulfur.dioxide)
+```
+### free sulfur dioxide(自由二氧化硫)含量呈明显右偏分布，中位数为14 mg/dm^3，均值为15.87 mg/dm^3，最小值为1 mg/dm^3， 最大值为 72 mg/dm^3。
+```{r echo=FALSE}
+ggplot(aes(x =  total.sulfur.dioxide), data = wine_quality_red)+
+  geom_histogram(binwidth = 2)
+
+ggplot(aes(x =  total.sulfur.dioxide), data = wine_quality_red)+
+  scale_x_continuous(trans = 'log10')+
+  geom_histogram()
+
+ggplot(aes(total.sulfur.dioxide, color = factor(quality)), data = wine_quality_red)+
+  geom_density()
+```
+```{r echo=FALSE}
+summary(wine_quality_red$total.sulfur.dioxide)
+```
+### total sulfur dioxide(总二氧化硫)含量也呈明显右偏分布，通过log10 转换后，分布图形接近对称。中位数为38 mg/dm^3，均值为46.47 mg/dm^3，最小值为6 mg/dm^3， 最大值为 289 mg/dm^3。
+```{r echo=FALSE}
+ggplot(aes(x =  density), data = wine_quality_red)+
+  geom_histogram()
+
+ggplot(aes(density, color = factor(quality)), data = wine_quality_red)+
+  geom_density()
+```
+```{r echo=FALSE}
+summary(wine_quality_red$density)
+```
+### density(密度)呈正态分布，中位数为0.9968 g/cm^3，均值为0.9967 g/cm^3，最小值为0.9901 g/cm^3， 最大值为 1.0040 g/cm^3。
+```{r echo=FALSE}
+ggplot(aes(x = pH), data = wine_quality_red)+
+  geom_histogram()
+
+ggplot(aes(pH, color = factor(quality)), data = wine_quality_red)+
+  geom_density()
+```
+```{r echo=FALSE}
+summary(wine_quality_red$pH)
+```
+### pH值也呈正态分布，中位数为 3.310，均值为3.311，最小值为2.740， 最大值为 4.010。
+```{r echo=FALSE}
+ggplot(aes(x =  sulphates), data = wine_quality_red)+
+  geom_histogram(binwidth = 0.01)
+
+ggplot(aes(x =  sulphates), data = wine_quality_red)+
+  scale_x_continuous(trans = 'log10')+
+  geom_histogram()
+
+ggplot(aes(sulphates, color = factor(quality)), data = wine_quality_red)+
+  geom_density()
+```
+```{r echo=FALSE}
+summary(wine_quality_red$sulphates)
+```
+### sulphates(硫酸盐)含量呈右偏分布，通过log10 转换后，分布图形接近正态分布。中位数为0.62 mg/dm^3，均值为0.66 mg/dm^3，最小值为0.33 mg/dm^3， 最大值为 2.00 mg/dm^3。
+
+```{r echo=FALSE}
+ggplot(aes(x =  alcohol), data = wine_quality_red)+
+  geom_histogram(binwidth = 0.1)
+
+ggplot(aes(alcohol, color = factor(quality)), data = wine_quality_red)+
+  geom_density()
+```
+```{r echo=FALSE}
+summary(wine_quality_red$alcohol)
+```
+### alcohol(酒精)浓度呈右偏分布。中位数为10.2%，均值为10.4%，最小值为8.4%， 最大值为 14.9%。
+
+# Univariate Analysis
+
+### What is the structure of your dataset?
+
+### 数据集包含1599条记录和13个变量，除第一列为编号外，实际包含固定酸、可挥发性酸、柠檬酸、残糖、氯化物、自由二氧化硫、总二氧化硫、硫酸盐、酒精等化学成分含量，红酒浓度、pH值以及红酒质量评分12个有效变量。其中质量评分规定为0至10分，0分为最差，10分为最佳。而实际数据中所有红酒的分数分布在3分至8分之间，其中大多数集中在5分和6分两档。
+
+### What is/are the main feature(s) of interest in your dataset?
+### 根据单变量分析结果，数据集的主要特征为酒精度、可挥发性酸及质量。根据按质量分组的密度曲线可以发现，酒精度和可挥发性酸两个变量在不同质量组的密度曲线差异最大，因此推论这两个成分最有可能影响红酒的质量。
+
+### What other features in the dataset do you think will help support your investigation into your feature(s) of interest?
+### 其他可能对质量产生影响的变量还包括柠檬度和硫化物。
+
+
+### Did you create any new variables from existing variables in the dataset?
+### 没有创造新的变量
+
+### Of the features you investigated, were there any unusual distributions? Did you perform any operations on the data to tidy, adjust, or change the form of the data? If so, why did you do this?
+### 质量评分的集中在5分和6分，其它分数非常少。数据集中所有变量都不包含缺失值，所以只在分析部分呈现偏态分布的变量是尝试使用log10转换，使转换后的数据呈现正态分布
+
+
+# Bivariate Plots Section
+```{r echo=FALSE, Bivariate_Plots}
+wine_quality_red_subset = wine_quality_red[,-1]
+pairs.panels(wine_quality_red_subset)
+```
+
+### 通过相关矩阵可以发现，数据集中多数自变量与因变量质量的相关性都非常弱。相关性最强的为酒精度与质量，相关系数0.48，可挥发性酸与质量呈现负相关，相关系数为-0.39。其它变量与相关质量的相关系数绝对值都低于0.3。
+
+```{r echo=FALSE}
+ggplot(aes(x = factor(quality), y = volatile.acidity), data = wine_quality_red)+
+  scale_y_continuous(breaks = seq(0, 1.6, 0.2))+
+  geom_boxplot()
+```
+```{r echo=FALSE}
+by( wine_quality_red$volatile.acidity, wine_quality_red$quality, summary)
+```
+```{r echo=FALSE}
+cor.test(x = wine_quality_red$volatile.acidity, y = wine_quality_red$quality, method = 'spearman')
+```
+### 通过分组箱线图可以发现评分较低的红酒中可挥发性酸含量分布总体高于评分较高的红酒，仅有8分组红酒可挥发性酸含量分布略高于7分组。相关性验证显示两变量spearman秩相关系数为-0.38，且具有统计显著性。说明可挥发性酸含量与红酒质量存在中等强度的负相关性。
+```{r echo=FALSE}
+ggplot( aes(x=factor(quality), y=citric.acid), data=wine_quality_red)+
+  geom_boxplot()
+```
+```{r echo=FALSE}
+by( wine_quality_red_subset$citric.acid, wine_quality_red_subset$quality, summary)
+```
+```{r echo=FALSE}
+cor.test(x = wine_quality_red$citric.acid, y = wine_quality_red$quality, method = 'spearman')
+```
+### 柠檬酸含量在低质量红酒中的总体低于质量较高的红酒，相关性验证显示两变量spearman秩相关系数为0.21，且具有统计显著性。因此柠檬酸含量与红酒质量存在较弱的正相关性。
+
+```{r echo=FALSE}
+ggplot( aes(x = factor(quality) ,y = sulphates), data = wine_quality_red)+
+  geom_boxplot()
+
+ggplot( aes(x = factor(quality) ,y = sulphates), data = wine_quality_red)+
+  scale_y_continuous(limits = c(0.25, 1))+
+  geom_boxplot()
+```
+```{r echo=FALSE}
+by( wine_quality_red$sulphates, wine_quality_red$quality, summary)
+```
+```{r echo=FALSE}
+cor.test(x = wine_quality_red$sulphates, y = wine_quality_red$quality, method = 'spearman')
+```
+### 硫化物含量在低质量红酒中的总体低于质量较高的红酒，相关性验证显示两变量spearman秩相关系数为0.38，且具有统计显著性。说明硫化物含量与红酒质量存在中等强度的正相关性。
+
+```{r echo=FALSE}
+ggplot( aes(x = factor(quality) ,y = alcohol), data = wine_quality_red)+
+  geom_boxplot()
+```
+```{r echo=FALSE}
+by( wine_quality_red$alcohol, factor(wine_quality_red$quality), summary)
+```
+```{r echo=FALSE}
+cor.test(x = wine_quality_red$alcohol, y = wine_quality_red$quality, method = 'spearman')
+```
+### 酒精浓度与红酒质量相关关系在5分以上的红酒中开始显现，相关性验证显示两变量spearman秩相关系数为0.48，且具有统计显著性。说明酒精浓度与红酒质量存在中等强度的正相关性。
+
+```{r echo=FALSE}
+ggplot( aes(x = volatile.acidity,y = citric.acid), data = wine_quality_red)+
+  geom_point()+
+  stat_smooth(method = 'lm')
+```
+```{r echo=FALSE}
+cor.test(x = wine_quality_red$volatile.acidity, y = wine_quality_red$citric.acid)
+```
+
+
+
+```{r echo=FALSE}
+ggplot(aes(x = log10(fixed.acidity), y = pH), data=wine_quality_red)+
+  geom_point(alpha = 1/3, position = 'jitter')+
+  stat_smooth(method = 'lm')
+cor.test(log10(wine_quality_red$fixed.acidity) ,  wine_quality_red$pH)
+```
+
+```{r echo=FALSE}
+ggplot(aes(x = log10(fixed.acidity), y = density), data=wine_quality_red)+
+  geom_point(alpha = 1/3, position = 'jitter')+
+  stat_smooth(method = 'lm')
+cor.test(log10(wine_quality_red$fixed.acidity) ,  wine_quality_red$density)
+```
+
+
+# Bivariate Analysis
+
+### Talk about some of the relationships you observed in this part of the investigation. How did the feature(s) of interest vary with other features in the dataset?
+
+### 红酒质量与可挥发性酸含量呈中等强度负相关性，spearman秩相关系数为-0.38，红酒质量随可挥发性酸含量升高而降低。同时，红酒质量与酒精浓度、硫化物及柠檬酸含量呈现正相关，spearman秩相关系数依次为0.48、0.38、0.21，红酒质量随这三种物质含量升高而提高。此外，主要特征中，可挥发性酸只与柠檬酸含量呈中等强度负相关，相关系数为-0.55，与其他特征没有明显相关关系。酒精浓度与密度相关系数为-0.50。柠檬酸含量与固定酸和pH含量分别为0.67和-0.54.
+
+### Did you observe any interesting relationships between the other features (not the main feature(s) of interest)?
+### 在对固定酸进行对数变换后，其与pH值和密度有较强的相关关系，相关系数分布为-0.71和0.67
+
+### What was the strongest relationship you found?
+### 在所有主要特征中酒精浓度与质量相关关系最强，spearman秩相关系数为0.48
+
+# Multivariate Plots Section
+```{r echo=FALSE, Multivariate_Plots}
+ggplot(aes(x = volatile.acidity, y = alcohol), data=wine_quality_red)+
+  geom_point(aes(color = factor(quality)),position = 'jitter')+
+  scale_color_brewer(type = 'div')
+```
+
+### 通过散点图发现，酒精度和可挥发性酸两个变量较好地解释红酒质量，酒精度高而可挥发性酸低的红酒总体拥有更好的质量。
+
+```{r echo=FALSE}
+ggplot(aes(x = citric.acid, y = alcohol), data=wine_quality_red)+
+  geom_point(aes(color = factor(quality)))+
+  scale_color_brewer(type = 'div')
+```
+```{r echo=FALSE}
+ggplot( aes(x= density ,y= fixed.acidity + residual.sugar - alcohol), data=wine_quality_red)+
+  
+  geom_point(alpha = 1/3, position = 'jitter')
+
+cor.test(wine_quality_red$density, wine_quality_red$fixed.acidity + wine_quality_red$residual.sugar-wine_quality_red$alcohol)
+```
+
+### 相比之下，酒精度和柠檬酸酸两个变量红酒质量解释稍差，主要体现在水平方向上柠檬酸对红酒质量解释能力不足。
+
+```{r echo=FALSE}
+ggplot(aes(x = sulphates, y = alcohol), data=wine_quality_red)+
+  geom_point(aes(color = factor(quality)))+
+  scale_color_brewer(type = 'div')
+```
+
+
+```{r echo=FALSE}
+ggplot(aes(x = volatile.acidity, y = sulphates), data=wine_quality_red)+
+  geom_point(aes(color = factor(quality)), position = 'jitter')+
+  scale_color_brewer(type = 'div')
+```
+
+### 比较硫化物与酒精度和可挥发性酸两个组合，酒精度与硫化物两个变量之间有更明显的相互加强作用，两个变量都较高的红酒更有可能拥有较好的质量。
+```{r echo=FALSE}
+cor.test(wine_quality_red$alcohol * wine_quality_red$sulphates, wine_quality_red$quality, 
+         method = 'spearman')
+cor.test(wine_quality_red$alcohol * wine_quality_red$volatile.acidity, wine_quality_red$quality, 
+         method = 'spearman')
+cor.test(wine_quality_red$alcohol * wine_quality_red$citric.acid, wine_quality_red$quality, 
+         method = 'spearman')
+```
+### 通过相关验证发现，酒精度与硫化物含量两变量的乘积与红酒质量存在显著相关性，相关系数为0.49。可以证明两变量间存在一定的相互加强作用。
+
+
+# Multivariate Analysis
+
+### Talk about some of the relationships you observed in this part of the investigation. Were there features that strengthened each other in terms of looking at your feature(s) of interest?
+### 这一部分探索了几个主要特征和支持特征之间的关系，结果表明，综合多个特征可以为红酒质量提供更好的解释，其中酒精度与硫化物两个变量之间有更明显的相互加强作用，两个变量都较高的红酒更有可能拥有较好的质量。
+
+### Were there any interesting or surprising interactions between features?
+### 探索其他变量发现红酒的密度主要有固定酸、残糖和酒精浓度决定，结合三个变量可以得到与密度较强的相关性，相关系数为0.84。其中固定酸、残糖含量与密度正相关，酒精浓度则与密度负相关。
+
+### OPTIONAL: Did you create any models with your dataset? Discuss the strengths and limitations of your model.
+
+------
+
+# Final Plots and Summary
+
+### Plot One
+```{r echo=FALSE, Plot_One}
+ggplot(aes(x = quality), data = wine_quality_red)+
+  scale_x_continuous(breaks=seq(0, 10, 1))+
+  ggtitle('Quality Count Distribution')+
+  xlab('quality (score between 0 and 10)')+
+  theme(plot.title = element_text(hjust = 0.5))+
+  geom_bar()
+```
+
+### Description One
+### 通过绘制红酒质量分布图可以看到，红酒质量的分布非常不平衡，大多数红酒为5至6分的中等水平，分数较高和较低的红酒只占很小的比例。此外，没有发现质量极好（高于8分）或极差（低于3分）的红酒。
+
+### Plot Two
+```{r echo=FALSE, Plot_Two}
+vb <- ggplot(aes(x = factor(quality), y = volatile.acidity), data = wine_quality_red)+
+  labs(title = 'Volatile Acidity by Quality',
+       x = 'quality (score between 0 and 10)',
+       y = 'volatile acidity (acetic acid - g / dm^3)')+
+  theme(plot.title = element_text(hjust = 0.5))+
+  geom_boxplot()
+
+ab <- ggplot(aes(x = factor(quality), y = alcohol), data = wine_quality_red)+
+  labs(title = 'Alcohol by Quality',
+       x = 'quality (score between 0 and 10)',
+       y = 'alcohol (% by volume)')+
+  theme(plot.title = element_text(hjust = 0.5))+
+  geom_boxplot()
+
+grid.arrange(vb, ab, ncol= 1)
+```
+
+### Description Two
+### 两组箱线图体现了两个主要特征（可挥发性酸和酒精度）都与红酒质量有一定相关性。其中可挥发性酸与质量呈负相关，质量较高的红酒可挥发性酸含量整体分布较低。而酒精度与质量呈正相关，质量较高的红酒酒精浓度分布较高。
+
+### Plot Three
+```{r echo=FALSE, Plot_Three}
+ggplot(aes(x = sulphates, y = alcohol), data=wine_quality_red)+
+  geom_point(aes(color = factor(quality)))+
+  scale_x_continuous(limits = c(0.25, 1.25))+
+  scale_color_brewer(type = 'div', guide = guide_legend(title = 'quality (score between 0 and 10)', reverse = F, override.aes = list(alpha = 1, size = 2)))+
+  labs(title = 'Alcohol by Sulphates and Quality',
+       x = 'sulphates (potassium sulphate - g / dm3)',
+       y = 'alcohol (% by volume)')+
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+### Description Three
+### 在多个解释变量中，酒精度与硫化物含量存在相对较强的相互加强作用。两种成分含量都较高的红酒更有可能拥有较高的质量。
+
+------
+
+# Reflection
+### 在分析过程中，遇到的主要困难是所有解释变量与目标变量的相关性都较弱，不容易选择主要特征。在尝试使用多种方法比较后，我决定根据各解释变量在不同红酒质量间密度曲线的差异找出最有可能对红酒质量作出较好解释的主要变量，在后续的分析中也验证了选择是正确的。
+### 在未来分析，可以增加更多数据，特别是针对本数据集，由于目标变量分布非常不平衡导致缺少质量在两极的数据，补充更多数据可以使变量间的相关关系更加明显。同时，在未来分析中，应该加深对变量间相互影响的内在机制的理解，如化学成分对红酒质量影响的原理，可以有助于在分析中对变量进行转化，得到新的变量。
